@@ -1,0 +1,20 @@
+{% extends "quotesapp/base.html" %}
+
+{% block content %}
+
+<form method="POST" action="{% url 'quotesapp:author' %}">
+    {% csrf_token %}
+    <div style="padding: 10px">
+        <label>Enter the author's name:</label>
+        {{ form.name }}
+        <div class="text-danger">
+            {{ form.name.errors }}
+        </div>
+    </div>
+    <div class="grid">
+        <button type="submit">Submit</button>
+        <button type="reset" class="secondary">Reset</button>
+    </div>
+</form>
+
+{% endblock %}

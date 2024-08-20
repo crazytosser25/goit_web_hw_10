@@ -1,0 +1,8 @@
+.alert-error,
+.errorlist {
+    color: #ff0000;
+}
+
+.alert-success {
+    color: #00ff00;
+}
