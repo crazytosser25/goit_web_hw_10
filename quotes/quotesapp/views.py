@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .forms import TagForm, AuthorForm, QuoteForm
 from .models import Tag, Author, Quote
 # pylint: disable=no-member
@@ -24,6 +25,7 @@ def author(request):
 
     return render(request, 'quotesapp/author.html', {'form': form})
 
+@login_required
 def quote(request):
     if request.method == 'POST':
         form = QuoteForm(request.POST)
@@ -32,21 +34,28 @@ def quote(request):
             author_id = request.POST.get('author')
             tags_ids = request.POST.getlist('tags')
 
-            Author.objects.get(id=author_id)
+            if author_id:
+                quote_.author = Author.objects.get(id=author_id)
+            else:
+                return render(request, 'quotesapp/quote_form.html', {
+                    'form': form,
+                    'authors': Author.objects.all(),
+                    'tags': Tag.objects.all(),
+                    'error': 'Author must be selected!'
+                })
+
             quote_.save()
 
             for tag_id in tags_ids:
-                Tag.objects.get(id=tag_id)
-                quote_.tags.add(tag_id)
+                tag = Tag.objects.get(id=tag_id)
+                quote_.tags.add(tag)
 
             return redirect('quotesapp:main')
     else:
         form = QuoteForm()
 
-    authors = Author.objects.all()
-    tags = Tag.objects.all()
     return render(request, 'quotesapp/quote.html', {
         'form': form,
-        'authors': authors,
-        'tags': tags
+        'authors': Author.objects.all(),
+        'tags': Tag.objects.all(),
     })

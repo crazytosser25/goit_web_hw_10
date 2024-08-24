@@ -47,5 +47,5 @@ class QuoteForm(ModelForm):
         fields = ['text']
         exclude = ['tags', 'author']
         widgets = {
-            'text': Textarea(attrs={'rows': 2, 'cols': 40}),
+            'text': Textarea(attrs={'rows': 4, 'cols': 40}),
         }
