@@ -36,7 +36,7 @@ class QuoteForm(ModelForm):
         required=True,
         widget=TextInput()
     )
-    quote = CharField(
+    text = CharField(
         min_length=10,
         max_length=250,
         required=True,
@@ -45,8 +45,8 @@ class QuoteForm(ModelForm):
 
     class Meta:
         model = Quote
-        fields = ['quote']
+        fields = ['text']
         exclude = ['tags', 'author']
         widgets = {
-            'quote': Textarea(attrs={'rows': 4, 'cols': 40}),
+            'text': Textarea(attrs={'rows': 4, 'cols': 40}),
         }
