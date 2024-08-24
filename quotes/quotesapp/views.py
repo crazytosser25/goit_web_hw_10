@@ -3,6 +3,7 @@ from .forms import TagForm, AuthorForm, QuoteForm
 from .models import Tag, Author, Quote
 # pylint: disable=no-member
 
+
 def main(request):
     quotes = Quote.objects.all()
     return render(request, 'quotesapp/index.html', {"quotes": quotes})
@@ -24,38 +25,28 @@ def author(request):
     return render(request, 'quotesapp/author.html', {'form': form})
 
 def quote(request):
-    tags = Tag.objects.all()
-    authors = Author.objects.all()
-
     if request.method == 'POST':
         form = QuoteForm(request.POST)
         if form.is_valid():
-            new_note = form.save()
-            choice_authors = Author.objects.filter(name__in=request.POST.getlist('authors'))
-            for autor in choice_authors.iterator():
-                new_note.authors.add(autor)
-            choice_tags = Tag.objects.filter(name__in=request.POST.getlist('tags'))
-            for teg in choice_tags.iterator():
-                new_note.tags.add(teg)
+            quote_ = form.save(commit=False)
+            author_id = request.POST.get('author')
+            tags_ids = request.POST.getlist('tags')
 
-            return redirect(to='quotesapp:main')
-        else:
-            return render(
-                request,
-                'quotesapp/quote.html',
-                {
-                    "authors": authors,
-                    "tags": tags,
-                    'form': form
-                }
-            )
+            Author.objects.get(id=author_id)
+            quote_.save()
 
-    return render(
-        request,
-        'quotesapp/quote.html',
-        {
-            "authors": authors,
-            "tags": tags,
-            'form': QuoteForm()
-        }
-    )
+            for tag_id in tags_ids:
+                Tag.objects.get(id=tag_id)
+                quote_.tags.add(tag_id)
+
+            return redirect('quotesapp:main')
+    else:
+        form = QuoteForm()
+
+    authors = Author.objects.all()
+    tags = Tag.objects.all()
+    return render(request, 'quotesapp/quote.html', {
+        'form': form,
+        'authors': authors,
+        'tags': tags
+    })

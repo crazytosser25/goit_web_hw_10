@@ -8,32 +8,34 @@
         <label> Quote:
             {{ form.text }}
         </label>
-        <span>{{ form.errors.quote }}</span>
+        <span>{{ form.errors.text }}</span>
     </div>
     <div style="padding: 10px">
         <label> Select author:
             <select name="author" required>
+                <option value="" disabled selected>Select</option>
                 {% for author in authors %}
-                <option value="{{author.name}}">{{author.name}}</option>
+                <option value="{{ author.id }}">{{ author.name }}</option>
                 {% endfor %}
             </select>
         </label>
         <span>{{ form.errors.author }}</span>
     </div>
     <div style="padding: 10px">
-        <label> Select tags:
-            <select name="tags" multiple="multiple" required>
-                {% for tag in tags %}
-                <option value="{{tag.name}}">{{tag.name}}</option>
-                {% endfor %}
-            </select>
-        </label>
+        <label>Select tags:</label>
+        {% for tag in tags %}
+        <div>
+            <input type="checkbox" name="tags" value="{{ tag.id }}">
+            {{ tag.name }}
+        </div>
+        {% endfor %}
         <span>{{ form.errors.tags }}</span>
     </div>
-    <div class="grid">
+    <footer class="grid">
         <button type="submit">Submit</button>
         <button type="reset" class="secondary">Reset</button>
-    </div>
+    </footer>
 </form>
+
 
 {% endblock %}

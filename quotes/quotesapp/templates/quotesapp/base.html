@@ -11,15 +11,45 @@
 </head>
 
 <body>
-    <main class="container">
+    <header class="container">
         <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
             <ul>
-                <li><a href="/" role="button"> Main page </a></li>
-                <li><a href="/tag/" role="button"> Add tag </a></li>
-                <li><a href="/author/" role="button"> Add author </a></li>
-                <li><a href="/quote/" role="button"> Add quote </a></li>
+                <li>
+                    <a href="/" role="button"> Home </a>
+                </li>
+                {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'quotesapp:tag' %}"> Add tag </a>
+                </li>
+                <li>
+                    <a href="{% url 'quotesapp:author' %}"> Add author </a>
+                </li>
+                <li>
+                    <a href="{% url 'quotesapp:quote' %}"> Add quote </a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul>
+                {% if user.is_authenticated %}
+                <li>
+                    <p>Welcome <b>{{ user.username }}!</b></p>
+                </li>
+                <li>
+                    <a href="{% url 'users:logout' %}" role="button" class="secondary">Log Out</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'users:signup' %}" role="button" class="secondary">Sign Up</a>
+                </li>
+                <li>
+                    <a href="{% url 'users:login' %}" role="button">Log In</a>
+                </li>
+                {% endif %}
             </ul>
         </nav>
+    </header>
+    <main class="container">
+
         {% block content %} {% endblock %}
     </main>
 </body>
