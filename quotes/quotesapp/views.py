@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import TagForm, AuthorForm, QuoteForm
-from .models import Tag, Author
+from .models import Tag, Author, Quote
 # pylint: disable=no-member
 
 def main(request):
-    return render(request, 'quotesapp/index.html')
+    quotes = Quote.objects.all()
+    return render(request, 'quotesapp/index.html', {"quotes": quotes})
 
 def tag(request):
     form = TagForm(request.POST or None)
@@ -32,7 +33,7 @@ def quote(request):
             new_note = form.save()
             choice_authors = Author.objects.filter(name__in=request.POST.getlist('authors'))
             for autor in choice_authors.iterator():
-                new_note.tags.add(autor)
+                new_note.authors.add(autor)
             choice_tags = Tag.objects.filter(name__in=request.POST.getlist('tags'))
             for teg in choice_tags.iterator():
                 new_note.tags.add(teg)

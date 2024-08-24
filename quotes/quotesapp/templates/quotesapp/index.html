@@ -3,5 +3,19 @@
 {% block content %}
 
 <h1>Quotes</h1>
+<ul>
+    {% for quote in quotes %}
+    <li>
+        <p>{{ quote.text }}</p>
+        <p>Author: {{ quote.author.name }}</p>
+        <p>Tags:</p>
+        {% for tag in quote.tags.all %}
+        <span>
+            {{ tag.name }}{% if not forloop.last %}, {% endif %}
+        </span>
+        {% endfor %}
+    </li>
+    {% endfor %}
+</ul>
 
 {% endblock %}
