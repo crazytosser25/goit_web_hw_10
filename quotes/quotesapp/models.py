@@ -1,7 +1,20 @@
+"""_summary_
+
+Returns:
+    _type_: _description_
+"""
 from django.db import models
 
 
 class Tag(models.Model):
+    """_summary_
+
+    Args:
+        models (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     name = models.CharField(max_length=25, unique=True)
 
     def __str__(self):
@@ -9,6 +22,14 @@ class Tag(models.Model):
 
 
 class Author(models.Model):
+    """_summary_
+
+    Args:
+        models (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     name = models.CharField(max_length=120, unique=True)
 
     def __str__(self):
@@ -16,6 +37,14 @@ class Author(models.Model):
 
 
 class Quote(models.Model):
+    """_summary_
+
+    Args:
+        models (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     author = models.ForeignKey(Author, on_delete=models.CASCADE, default=1)
     text = models.CharField(max_length=250, null=False)
     tags = models.ManyToManyField(Tag)

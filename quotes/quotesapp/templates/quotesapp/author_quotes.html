@@ -1,0 +1,27 @@
+{% extends "quotesapp/base.html" %}
+
+{% block content %}
+<h1>Quotes by {{ author.name }}</h1>
+
+{% if quotes %}
+<ul>
+    {% for quote in quotes %}
+    <li style="list-style: none;">
+        <article>
+            <p>{{ quote.text }}</p>
+            <p>
+            <h3>Tags:</h3>
+            {% for tag in quote.tags.all %}
+            <a href="{% url 'quotesapp:quotes_by_tag' tag.id %}">
+                {{ tag.name }}
+            </a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            </p>
+        </article>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No quotes available for this author.</p>
+{% endif %}
+{% endblock %}

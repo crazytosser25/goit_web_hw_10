@@ -1,8 +1,9 @@
 {% extends "quotesapp/base.html" %}
 
 {% block content %}
+<h1>Quotes tagged with "{{ tag.name }}"</h1>
 
-<h1>Quotes</h1>
+{% if quotes %}
 <ul>
     {% for quote in quotes %}
     <li style="list-style: none;">
@@ -11,17 +12,11 @@
             <h3>By:
                 <a href="{% url 'quotesapp:author_quotes' quote.author.id %}">{{ quote.author.name }}</a>
             </h3>
-            <p><b>Tags:</b></p>
-            {% for tag in quote.tags.all %}
-            <span>
-                <a href="{% url 'quotesapp:quotes_by_tag' tag.id %}">
-                    {{ tag.name }}
-                </a>{% if not forloop.last %}, {% endif %}
-            </span>
-            {% endfor %}
         </article>
     </li>
     {% endfor %}
 </ul>
-
+{% else %}
+<p>No quotes found for this tag.</p>
+{% endif %}
 {% endblock %}
