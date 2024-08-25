@@ -12,11 +12,30 @@
 
 <body>
     <header class="container">
-        <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
-            <ul>
-                <li>
-                    <a href="/" role="button"> Home </a>
+        <div style="display: flex; justify-content: space-between; padding: 0 15px">
+            <a href="/">
+                <h1 style="margin-bottom: 0;">Quotes</h1>
+            </a>
+            <ul style="display: flex; gap: 20px">
+                {% if user.is_authenticated %}
+                <li style="list-style: none; margin-top: 12px;">
+                    <p>Welcome <b>{{ user.username }}!</b></p>
                 </li>
+                <li style="list-style: none;">
+                    <a href="{% url 'users:logout' %}" role="button" class="secondary">Log Out</a>
+                </li>
+                {% else %}
+                <li style="list-style: none;">
+                    <a href="{% url 'users:signup' %}" role="button" class="secondary">Sign Up</a>
+                </li>
+                <li style="list-style: none;">
+                    <a href="{% url 'users:login' %}" role="button">Log In</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        <nav style="margin-bottom: 15px; border-bottom: 2px solid; padding: 0 15px">
+            <ul>
                 {% if user.is_authenticated %}
                 <li>
                     <a href="{% url 'quotesapp:tag' %}"> Add tag </a>
@@ -29,28 +48,11 @@
                 </li>
                 {% endif %}
             </ul>
-            <ul>
-                {% if user.is_authenticated %}
-                <li>
-                    <p>Welcome <b>{{ user.username }}!</b></p>
-                </li>
-                <li>
-                    <a href="{% url 'users:logout' %}" role="button" class="secondary">Log Out</a>
-                </li>
-                {% else %}
-                <li>
-                    <a href="{% url 'users:signup' %}" role="button" class="secondary">Sign Up</a>
-                </li>
-                <li>
-                    <a href="{% url 'users:login' %}" role="button">Log In</a>
-                </li>
-                {% endif %}
-            </ul>
         </nav>
     </header>
     <main class="container">
-
-        {% block content %} {% endblock %}
+        {% block content %}
+        {% endblock %}
     </main>
 </body>
 

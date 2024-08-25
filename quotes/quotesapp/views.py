@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import TagForm, AuthorForm, QuoteForm
 from .models import Tag, Author, Quote
+from .filler import migrate_data
 # pylint: disable=no-member
 
 
@@ -101,6 +102,15 @@ def quote(request):
     })
 
 def author_quotes(request, author_id):
+    """_summary_
+
+    Args:
+        request (_type_): _description_
+        author_id (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     author_ = get_object_or_404(Author, id=author_id)
 
     quotes = Quote.objects.filter(author=author_)
@@ -111,6 +121,15 @@ def author_quotes(request, author_id):
     })
 
 def quotes_by_tag(request, tag_id):
+    """_summary_
+
+    Args:
+        request (_type_): _description_
+        tag_id (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     tag_ = get_object_or_404(Tag, id=tag_id)
     quotes = Quote.objects.filter(tags=tag_)
 
@@ -118,3 +137,8 @@ def quotes_by_tag(request, tag_id):
         'tag': tag_,
         'quotes': quotes,
     })
+
+@login_required
+def migration(request):
+    migrate_data(request)
+    return redirect('quotesapp:main')

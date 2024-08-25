@@ -6,10 +6,15 @@ from django.contrib import messages
 from .forms import RegisterForm, LoginForm
 
 # Create your views here.
-def auth(request):
-    pass
-
 def signupuser(request):
+    """_summary_
+
+    Args:
+        request (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         return redirect(to='quotesapp:main')
 
@@ -24,6 +29,14 @@ def signupuser(request):
     return render(request, 'users/signup.html', context={"form": RegisterForm()})
 
 def loginuser(request):
+    """_summary_
+
+    Args:
+        request (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     if request.user.is_authenticated:
         return redirect(to='quotesapp:main')
 
@@ -40,5 +53,13 @@ def loginuser(request):
 
 @login_required
 def logoutuser(request):
+    """_summary_
+
+    Args:
+        request (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     logout(request)
     return redirect(to='quotesapp:main')

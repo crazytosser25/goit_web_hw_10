@@ -15,7 +15,7 @@ class Tag(models.Model):
     Returns:
         _type_: _description_
     """
-    name = models.CharField(max_length=25, unique=True)
+    name = models.CharField(max_length=60, unique=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -46,7 +46,7 @@ class Quote(models.Model):
         _type_: _description_
     """
     author = models.ForeignKey(Author, on_delete=models.CASCADE, default=1)
-    text = models.CharField(max_length=250, null=False)
+    text = models.CharField(max_length=3000, null=False)
     tags = models.ManyToManyField(Tag)
 
     def __str__(self):
