@@ -67,6 +67,46 @@ class Quotes(Document):
 
 @transaction.atomic
 def migrate_data(request):
+    """Migrates data from MongoDB collections to the corresponding PostgreSQL models.
+
+    This function is designed to be used within a Django project to transfer
+    data from MongoDB to PostgreSQL. The data includes authors, quotes, and tags.
+    The function ensures that all operations are performed atomically, meaning
+    either all of the data is transferred successfully, or none of it is,
+    preventing partial migrations in case of an error.
+
+    Args:
+        request: The HTTP request object that initiated this migration.
+
+    Returns:
+        request: The original HTTP request object.
+
+    The function performs the following steps:
+
+    1. **Authors Migration**:
+        - Fetches all authors from MongoDB.
+        - Creates or retrieves corresponding `Author` objects in PostgreSQL.
+        - Maps the MongoDB author IDs to the corresponding PostgreSQL IDs for
+            linking quotes later.
+
+    2. **Quotes Migration**:
+        - Fetches all quotes from MongoDB.
+        - For each quote, retrieves or creates the associated tags in PostgreSQL.
+        - Creates a new `Quote` object in PostgreSQL, associates it with the
+            appropriate author using the `author_mapping`, and sets the related tags.
+
+    The `@transaction.atomic` decorator ensures that all database operations
+    are wrapped in a single transaction. If any error occurs during the migration,
+    all changes are rolled back to maintain database consistency.
+
+    Example Usage:
+        This function can be triggered by a Django view to start the migration
+        process when needed, typically for administrative purposes.
+
+    Raises:
+        Exception: If there is any error during the migration, it will trigger
+        a rollback of all database operations performed in this function.
+    """
     mongo_authors = Authors.objects()
     author_mapping = {}
 
@@ -89,5 +129,4 @@ def migrate_data(request):
         quote.tags.set(tags)
         quote.save()
 
-    print("\nMigration completed successfully!\n")
     return request

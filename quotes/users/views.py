@@ -1,3 +1,4 @@
+"""Views for users in quotesapp"""
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -5,15 +6,21 @@ from django.contrib import messages
 
 from .forms import RegisterForm, LoginForm
 
-# Create your views here.
+
 def signupuser(request):
-    """_summary_
+    """Handles user registration.
+
+    This view renders a registration form for new users. If the request is POST
+    and the form is valid, it creates a new user and redirects to the main page.
+    If the user is already authenticated, they are redirected to the main page.
 
     Args:
-        request (_type_): _description_
+        request (HttpRequest): The HTTP request object containing data from
+            the user.
 
     Returns:
-        _type_: _description_
+        HttpResponse: The rendered template with the registration form or
+            redirection to the main page.
     """
     if request.user.is_authenticated:
         return redirect(to='quotesapp:main')
@@ -29,13 +36,20 @@ def signupuser(request):
     return render(request, 'users/signup.html', context={"form": RegisterForm()})
 
 def loginuser(request):
-    """_summary_
+    """Handles user login.
+
+    This view renders a login form for users. If the request is POST, it attempts
+    to authenticate the user with the provided credentials. If authentication
+    fails, an error message is displayed, and the user is redirected back to
+    the login page. If the user is already authenticated, they are redirected
+    to the main page.
 
     Args:
-        request (_type_): _description_
+        request (HttpRequest): The HTTP request object containing login data.
 
     Returns:
-        _type_: _description_
+        HttpResponse: The rendered template with the login form, an error
+            message, or redirection to the main page.
     """
     if request.user.is_authenticated:
         return redirect(to='quotesapp:main')
@@ -53,13 +67,16 @@ def loginuser(request):
 
 @login_required
 def logoutuser(request):
-    """_summary_
+    """Handles user logout.
+
+    This view logs out the currently authenticated user and redirects them
+    to the main page.
 
     Args:
-        request (_type_): _description_
+        request (HttpRequest): The HTTP request object.
 
     Returns:
-        _type_: _description_
+        HttpResponse: Redirection to the main page after logout.
     """
     logout(request)
     return redirect(to='quotesapp:main')

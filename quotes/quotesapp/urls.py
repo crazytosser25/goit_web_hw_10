@@ -1,5 +1,4 @@
-"""_summary_
-"""
+"""Url list for quotesapp"""
 from django.urls import path
 from . import views
 

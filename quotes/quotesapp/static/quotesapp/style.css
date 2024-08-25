@@ -6,11 +6,3 @@
 .alert-success {
     color: #00ff00;
 }
-
-nav {
-    justify-content: space-between;
-}
-
-li {
-    list-style: none;
-}
