@@ -1,6 +1,6 @@
 # goit_web_hw_10
 
-### Homework 10
+### Homework 10, 13 - Password reset
 
 1. Файл .env має бути створений у корені проекту і заповнений згідно прикладу.
 Залежності встановлюються з файлу requirements.txt.
